@@ -1,0 +1,84 @@
+{% extends "layouts/base.html" %}
+{% block title %} MISP Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<form method="Get">
+  <input type="datetime-local" name="Starttime" value="{{ StartTime }}"/>
+  <input type="datetime-local" name="Endtime" value="{{ EndTime }}" />
+
+  <button type="Submit" name="action" value="New">Submit</button> 
+  <a href="{% url 'export_csv' %}"class="btn btn-primary">Export all</a>
+  <br><input type="hidden" name = "page" value="{{ page }}" />
+  <br><input type="hidden" name = "pages" value="{{ pages }}" />
+  
+<table class="table">
+  <tr>
+    <th>Time</th>
+    <th>srcIP</th>
+    <th>srcPort</th>
+    <th>dstIP</th>
+    <th>dstPort</th>
+    <th>Indicator</th>
+    <th>type</th>
+    <th>Category</th>
+
+  </tr>
+  {% for item in data %}
+    <tr>
+      <td>{{ item.0 }}</td>
+      <td>{{ item.1 }}</td>
+      <td>{{ item.2 }}</td>
+      <td>{{ item.3 }}</td>
+      <td>{{ item.4 }}</td>
+      <td>{{ item.5 }}</td>
+      <td>{{ item.6 }}</td>
+      <td>{{ item.7 }}</td>
+    </tr>
+  {% endfor %}
+</table>
+<div class="row " >
+  <div class="col-md-4 offset-8" >
+    <button class="btn btn-primary" type="Submit" name="action" value = "start">|<</button>
+    <button class="btn btn-info" type="Submit" name="action" value = "Back"><</button>
+    {{ page }} 
+    <button class="btn btn-info" type="Submit" name="action" value = "Next">></button> 
+    <button class="btn btn-primary" type="Submit" name="action" value = "end">>|</button> 
+    {{ pages }}  |  Hit Totals : {{ total }}
+  </div>
+</div>
+</form>
+</div>
+<!-- <div class="row">
+<div class="col-md-8">
+<a href=""class="btn-secondary">Export CSV</a>
+</div> -->
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      demo.initDashboardPageCharts();
+
+    });
+    $(document).ready(function(){
+        $(function() {
+        $('input[name="daterange"]').daterangepicker({
+        "startDate": "01/01/2022",
+        "endDate": "17/01/2022",
+        opens: 'center',
+        locale: {
+        format: 'DD/MM/YYYY'
+        }
+        });
+        });
+        });
+  </script>
+
+{% endblock javascripts %}
